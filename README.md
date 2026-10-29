@@ -25,7 +25,7 @@ Everything will be in game .cpp file
 
 ## Planned Tests and Experiments
 
-To be added
+I will test as many issues and edge case as i can come up with
 
 ## Assignment Submission
 
