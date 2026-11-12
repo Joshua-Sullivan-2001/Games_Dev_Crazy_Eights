@@ -31,9 +31,47 @@ void gameHelp(){
     cout << "13. Count the card points in the other players hands and add them to the winner's score." << endl; // Print rule 13
     cout << "14. Each eight left in a hand is worth 50 points. Each king, queen, jack or ten is worth 10 points, each ace is worth 1 point and all other number cards are worth their face value." << endl; // Print rule 14
     cout << "15. Play multiple rounds rotating the dealer to the left each time. The first player to reach 100 points (for 2 players) or 150 to 250 points (for 3 to 5 players) wins the game." << endl; // Print rule 15
+    
+    cout << endl; // Print a blank line
+    cout << "Press any key to continue..." << endl; // Prompt the user to press any key to continue
+    cin.get(); // Wait for the user to press a key
 
-
+    return; // Return from the function
 }
+
+void gameStart(){
+
+    system("cls"); // Clear the console screen
+
+    cout << "Starting a new game..." << endl; // Print message indicating a new game is starting
+    cout << "Press any key to continue..." << endl; // Prompt the user to press any key to continue
+    cin.get(); // Wait for the user to press a key
+
+    return; // Return from the function
+}
+
+void clearScreen(){
+
+    system("cls"); // Clear the console screen
+
+    return; // Return from the function
+}
+
+void mainMenuExit(){
+
+    system("cls"); // Clear the console screen
+
+    cout << "Exiting the game..." << endl; // Print message indicating the game is exiting
+    cout << "Press any key to continue..." << endl; // Prompt the user to press any key to continue
+    cin.get(); // Wait for the user to press a key
+    exit(0); // Exit the program with a status code of 0 (indicating successful termination)
+
+    return; // Return from the function
+}
+
+
+
+
 
 int main(){
 
