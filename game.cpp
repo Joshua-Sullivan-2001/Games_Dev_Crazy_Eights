@@ -6,9 +6,7 @@
 #include <iostream> // Include the iostream library for input/output operations
 #include <cstdlib> // Include the cstdlib library for system commands
 #include <vector> // Include the vector library for dynamically sized arrays
-
 using namespace std; // Use the standard namespace to avoid prefixing standard library names with "std::"
-
 
 static void gameRules(){
 
@@ -234,66 +232,20 @@ static void nextRound(int currentRound){
     return; // Return from the function
 }
 
+static void activeValidatorForRulesDuringGamePlay(){
 
+    // This function will be called at the start of each player's turn in the background to ensure they can only make valid moves and that the game is played correctly. This function will also be called at the end of each player's turn to ensure that the game state is updated correctly and that the next player can only make valid moves.
 
-static void rulesForGameCodeWhilePlaying(){
-    // Automatic rules for the game code while playing, to ensure that the game is played correctly and fairly. This function will be called at the start of each player's turn in the background to ensure they can only make valid moves and that the game is played correctly. This function will also be called at the end of each player's turn to ensure that the game state is updated correctly and that the next player can only make valid moves.
-
-    // ranks: 2 - 10, jack, queen, king, ace, 8
-    //check if any player has a valid move in order to not prematurely end the game. If no player has a valid move, the game is a draw. If a player has no cards left, they win the game. If a player has no valid moves, they must draw a card from the draw pile. If the drawn card can be played, they may play it immediately. Otherwise, the turn passes to the next player. If the draw pile is empty and a player cannot play a card, they must pass their turn. If both the draw and discard piles are empty but player has valid moves, they may play a card. If both the draw and discard piles are empty and player has no valid moves, they must pass their turn. If both the draw and discard piles are empty and player has only one card left, they must pass their turn. If both the draw and discard piles are empty and player has valid moves but only one card left, they may play a card. So short, the game will continue until a player has no cards left or both the draw and discard piles are empty and no player has valid moves. The game will also continue until a player has no cards left or both the draw and discard piles are empty and a player has only one card left. The game will also continue until a player has no cards left or both the draw and discard piles are empty and a player has valid moves but only one card left and will only end after they play that final card.
-
-
-    if (drawDeck.isEmpty() && discardPile.isEmpty() && players[currentPlayer].getHandSize() == 0) {
-        cout << "The draw pile and discard pile are both empty. The game is a draw." << endl;
-        exit(0); // Exit the game if both piles are empty
-    }
-    else if (players[currentPlayer].getHandSize() == 0) {
-        cout << "Player " << currentPlayer + 1 << " has no cards left. They win the game!" << endl;
-        exit(0); // Exit the game if a player has no cards left
-    }
-    else if (players[currentPlayer].getHandSize() > 0 && players[currentPlayer].hasValidMove(discardPile.getTopCard()) == false) {
-        cout << "Player " << currentPlayer + 1 << " has no valid moves. They must draw a card." << endl;
-        players[currentPlayer].drawCard(drawDeck); // Draw a card from the draw pile
-    }
-    else if (players[currentPlayer].getHandSize() > 0 && players[currentPlayer].hasValidMove(discardPile.getTopCard()) == true) {
-        cout << "Player " << currentPlayer + 1 << " has valid moves. They may play a card." << endl;
-    }
-    else if (players[currentPlayer].getHandSize() > 0 && players[currentPlayer].hasValidMove(discardPile.getTopCard()) == false && drawDeck.isEmpty()) {
-        cout << "Player " << currentPlayer + 1 << " has no valid moves and the draw pile is empty. They must pass their turn." << endl;
-    }
-    else if (players[currentPlayer].getHandSize() > 0 && players[currentPlayer].hasValidMove(discardPile.getTopCard()) == true && drawDeck.isEmpty()) {
-        cout << "Player " << currentPlayer + 1 << " has valid moves but the draw pile is empty. They may play a card." << endl;
-    }
-    else if (players[currentPlayer].getHandSize() > 0 && players[currentPlayer].hasValidMove(discardPile.getTopCard()) == false && drawDeck.isEmpty() && discardPile.isEmpty()) {
-        cout << "Player " << currentPlayer + 1 << " has no valid moves and both the draw pile and discard pile are empty. They must pass their turn." << endl;
-    }
-    else if (players[currentPlayer].getHandSize() > 0 && players[currentPlayer].hasValidMove(discardPile.getTopCard()) == true && drawDeck.isEmpty() && discardPile.isEmpty()) {
-        cout << "Player " << currentPlayer + 1 << " has valid moves but both the draw pile and discard pile are empty. They may play a card." << endl;
-    }
-    else if (players[currentPlayer].getHandSize() > 0 && players[currentPlayer].hasValidMove(discardPile.getTopCard()) == false && drawDeck.isEmpty() && discardPile.isEmpty() && players[currentPlayer].getHandSize() == 1) {
-        cout << "Player " << currentPlayer + 1 << " has no valid moves, both the draw pile and discard pile are empty, and they have only one card left. They must pass their turn." << endl;
-    }
-    else if (players[currentPlayer].getHandSize() > 0 && players[currentPlayer].hasValidMove(discardPile.getTopCard()) == true && drawDeck.isEmpty() && discardPile.isEmpty() && players[currentPlayer].getHandSize() == 1) {
-        cout << "Player " << currentPlayer + 1 << " has valid moves, both the draw pile and discard pile are empty, and they have only one card left. They may play a card." << endl;
+    if(players[currentPlayer].hasValidMove(discardPile.peekTopCard())){
+        // Player has a valid move, continue with their turn
+    } else {
+        // Player does not have a valid move, they must draw a card
+        players[currentPlayer].drawCard(drawDeck.getTopCard());
+        cout << "Player " << currentPlayer + 1 << " has no valid moves and must draw a card." << endl;
     }
 
-    // Aces are 1
 
-    // suits: hearts, diamonds, clubs, spades
 
-    // 8 is a wild card and can be played on any card. When an 8 is played, the player must declare the suit that the next player must play.
-
-    // If a player cannot play a card, they must draw a card from the draw pile. If the drawn card can be played, the player may play it immediately. Otherwise, the turn passes to the next player.
-
-    // If the draw pile is empty and a player cannot play a card, they must pass their turn.
-
-    // The first player to get rid of all their cards wins the game. Count the card points in the other players hands and add them to the winner's score. Each 8 left in a hand is worth 50 points. Each king, queen, jack or ten is worth 10 points, each ace is worth 1 point and all other number cards are worth their face value.
-
-    // Play multiple rounds rotating the dealer to the left each time. The first player to reach 100 points (for 2 players) or 150 to 250 points (for 3 to 5 players) wins the game.
-
-    // The game can be played with 2 to 5 players. If playing with 3 - 5 players, each player is dealt 5 cards. If playing with 2 players, each player is dealt 7 cards. The remaining cards are placed face down to form a draw pile. The top card of the draw pile is turned face up to start the discard pile. The player to the left of the dealer goes first.
-
-    // The game is played with a standard deck of 52 cards.
 
 }
 
@@ -355,7 +307,7 @@ int main(){
 
     discardPile.addCard(drawDeck.getTopCard()); // Add the top card from the main deck to the discard pile
     
-
+    
 
 
 
