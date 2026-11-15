@@ -102,10 +102,10 @@ void Player::printHand() // Prints the player's hand in a more user-friendly for
 	}
 }
 
-bool Player::hasValidMove(Card top) // Checks if the player has any valid moves available based on the top card of the discard pile. A valid move is defined as having a card in the player's hand that matches the rank or suit of the top card or if the player has an eight, they can play it regardless of the rank or suit.
+bool Player::hasValidMove(Card top, string currentSuit) // Checks if the player has any valid moves available based on the top card of the discard pile. A valid move is defined as having a card in the player's hand that matches the rank or suit of the top card or if the player has an eight, they can play it regardless of the rank or suit.
 {
 	for (Card c : this->hand) {
-		if (c.getRank() == top.getRank() || c.getSuit() == top.getSuit() || c.getRank() == 8) {
+		if (c.getRank() == top.getRank() || c.getSuit() == currentSuit || c.getRank() == 8) {
 			return true;
 		}
 	}

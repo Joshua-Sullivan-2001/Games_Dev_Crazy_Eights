@@ -106,9 +106,10 @@ public:
 	 * Made By : Joshua Sullivan
 	 * Checks if the player has any valid moves available based on the top card of the discard pile.
 	 * \param top The top card of the discard pile.
+	 * \param currentSuit The current suit of the game.
 	 * \return True if the player has a valid move, false otherwise.
 	 */
-	bool hasValidMove(Card top);
+	bool hasValidMove(Card top, string currentSuit);
 	/**
 	 * Made By : Joshua Sullivan
 	 * Draws a new card from the draw deck and adds it to the player's hand.
