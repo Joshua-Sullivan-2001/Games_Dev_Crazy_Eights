@@ -1,12 +1,52 @@
 // This .cpp file will hold the crazy eights full game code
 #include "game.h" // Include the header file for this .cpp file
-#include "Deck.h" // Include the header file for the Deck class
-#include "Player.h" // Include the header file for the Player class
-#include "Card.h" // Include the header file for the Card class
+#include "template/Deck.h" // Include the header file for the Deck class
+#include "template/Player.h" // Include the header file for the Player class
+#include "template/Card.h" // Include the header file for the Card class
 #include <iostream> // Include the iostream library for input/output operations
 #include <cstdlib> // Include the cstdlib library for system commands
 #include <vector> // Include the vector library for dynamically sized arrays
 using namespace std; // Use the standard namespace to avoid prefixing standard library names with "std::"
+
+// Declare global variables for the draw deck, discard pile, players and current player index
+
+Deck drawDeck; // Declare a global variable for the draw deck
+Deck discardPile; // Declare a global variable for the discard pile
+vector<Player> players; // Declare a global variable for the vector of players
+int currentPlayer = 0; // Declare a global variable for the current player index
+
+// Declare function prototypes for the compiler to recognize the functions before they are defined
+
+static void gameRules(); // Declare a function to display the game rules
+static void gameStart(); // Declare a function to start the game
+static void clearScreen(); // Declare a function to clear the console screen
+static void mainMenuExit(); // Declare a function to exit the game from the main menu
+static void mainMenu(); // Declare a function to display the main menu
+static int playerAmount(); // Declare a function to get the number of players
+static void playerNames(int numPlayers); // Declare a function to get the names of the players
+static void playerTurn(int currentPlayer, int numPlayers); // Declare a function to handle a player's turn
+static void checkHand(int currentPlayer, int numPlayers); // Declare a function to check a player's hand for valid moves
+static void startGame(); // Declare a function to start the game
+static void nextRound(int currentRound); // Declare a function to start the next round
+static void activeValidatorForRulesDuringGamePlay(); // Declare a function to validate the game rules
+static void playerScores(vector<int> playerScores); // Declare a function to display the scores of the players
+static void countScore(int winner, vector<int> playerScores); // Declare a function to count the scores of the players and display the winner
+static int readNumber(); // Declare a function to read a number from the user input
+
+
+static int readNumber(){
+
+    int number; // Declare a variable to hold the number input by the user
+    
+    if (!(cin >> number)){ // Check if the input is not a number
+        cin.clear(); // Clear the error flag on cin
+        number = 0; // Set the number to 0 if the input is not a number
+    }
+
+    cin.ignore(10000, '\n'); // Ignore the rest of the input line to prevent any leftover characters from affecting future input
+    return number; // Return the number input by the user
+
+}
 
 static void gameRules(){
 
@@ -94,9 +134,7 @@ static void mainMenu(){
     cout << endl; // Print a blank line
     cout << "Enter your choice (1-3): ";
 
-    int choice;
-
-    cin >> choice;
+    int choice = readNumber(); // Read the user's choice using the readNumber function
 
     switch(choice){
         case 1:
@@ -110,6 +148,8 @@ static void mainMenu(){
             break;
         default:
             cout << "Invalid choice. Please try again." << endl;
+            cout << "Press any key to continue..." << endl; // Prompt the user to press any key to continue
+            cin.get(); // Wait for the user to press a key
             mainMenu();
     }
 
@@ -126,12 +166,12 @@ static int playerAmount(){
     cout << endl; // Print a blank line
     cout << "Enter the number of players (2-5): ";
 
-    int numPlayers;
-
-    cin >> numPlayers;
+    int numPlayers = readNumber(); // Read the number of players using the readNumber function
 
     if(numPlayers < 2 || numPlayers > 5){
         cout << "Invalid number of players. Please try again." << endl;
+        cout << "Press any key to continue..." << endl; // Prompt the user to press any key to continue
+        cin.get(); // Wait for the user to press a key
         return playerAmount();
     }
 
@@ -149,9 +189,20 @@ static void playerNames(int numPlayers){
 
     vector<string> playerNames(numPlayers);
 
+    players.clear(); // Clear the players vector to ensure it starts empty
+
     for(int i = 0; i < numPlayers; i++){
+        string name; // Declare a variable to hold the player's name
         cout << "Enter name for Player " << i + 1 << ": ";
-        cin >> playerNames[i];
+        getline(cin, name); // Get the player's name from input
+
+        if (name.empty()) { // Check if the name is empty
+            name = "Player " + to_string(i + 1); // Assign a default name if the input is empty
+        }
+        Player newPlayer; // Create a new Player object
+        newPlayer.setName(name); // Set the player's name
+        players.push_back(newPlayer); // Add the new Player object to the players vector
+
     }
 
     return; // Return from the function
@@ -165,20 +216,12 @@ static void playerTurn(int currentPlayer, int numPlayers){
     cout << "-----------" << "Player Turn" << "-----------" << endl; // Print player turn header
     cout << "-------------------------------------------" << endl; // Print a separator line
     cout << endl; // Print a blank line
-    cout << "It is Player " << currentPlayer + 1 << "'s turn." << endl; // Print the current player's turn
+    cout << "It is " << players[currentPlayer].getName() << "'s turn." << endl; // Print the current player's turn
     cout << endl; // Print a blank line
     cout << "Press Enter to continue...";
-    cin.ignore();
     cin.get();
 
-    cout << endl; // Print a blank line
-    cout << "Top card of the discard pile: ";
-    discardPile.peakTopCard(); // Peek at the top card of the discard pile
-    cout << endl; // Print a blank line
-
     checkHand(currentPlayer, numPlayers); // Call the check hand function to display the current player's hand
-
-
 
     return; // Return from the function
 }
@@ -187,15 +230,18 @@ static void checkHand(int currentPlayer, int numPlayers){
 
     clearScreen(); // Clear the console screen
 
+    cout << "The top card of the discard pile is: " << discardPile.peekTopCard().toString() << endl; // Print the top card of the discard pile
+    cout << endl; // Print a blank line
+
+
     cout << "-----------" << "Current Hand" << "-----------" << endl; // Print check hand header
     cout << endl; // Print a blank line
 
-    cout << "Player " << currentPlayer + 1 << "'s hand: ";
+    cout << "Player " << players[currentPlayer].getName() << "'s hand: ";
     players[currentPlayer].printHand(); // Print the current player's hand
     cout << endl; // Print a blank line
     cout << "Press Enter to continue...";
     cout << endl; // Print a blank line
-    cin.ignore();
     cin.get();
     
 
@@ -226,7 +272,6 @@ static void nextRound(int currentRound){
     cout << "Starting Round " << currentRound + 1 << "..." << endl; // Print the current round number
     cout << endl; // Print a blank line
     cout << "Press Enter to continue...";
-    cin.ignore();
     cin.get();
 
     return; // Return from the function
@@ -264,7 +309,6 @@ static void playerScores(vector<int> playerScores){
 
     cout << endl; // Print a blank line
     cout << "Press Enter to continue...";
-    cin.ignore();
     cin.get();
 
     return; // Return from the function
@@ -289,7 +333,6 @@ static void countScore(int winner, vector<int> playerScores){
 
     cout << endl; // Print a blank line
     cout << "Press Enter to continue...";
-    cin.ignore();
     cin.get();
 
     return; // Return from the function
@@ -299,38 +342,19 @@ int main(){
 
     clearScreen(); // Clear the console screen
 
-    Deck drawDeck; // Create a new Deck object
     drawDeck.shuffle(); // Shuffle the deck of cards
 
-    Deck discardPile; // Create a new Deck object for the discard pile
     discardPile.clear(); // Clear the discard pile to ensure it starts empty
 
     discardPile.addCard(drawDeck.getTopCard()); // Add the top card from the main deck to the discard pile
     
-    
+    while (true) { // Start an infinite loop to keep the game running until the user chooses to exit
+        mainMenu(); // Call the main menu function to display the main menu and handle user input
+    }
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    mainMenu(); // Call the main menu function to start the game
 
 
     return 0;

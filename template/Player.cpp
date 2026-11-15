@@ -92,3 +92,27 @@ int Player::getScore()
 {
 	return this->score;
 }
+
+// All below this line was made by Joshua Sullivan
+
+void Player::printHand() // Prints the player's hand in a more user-friendly format with each card on a new line and numbered for easy selection
+{
+	for (int i = 0; i < this->hand.size(); i++) {
+		cout << i + 1 << "." << this->hand[i].toString() << endl;
+	}
+}
+
+bool Player::hasValidMove(Card top) // Checks if the player has any valid moves available based on the top card of the discard pile. A valid move is defined as having a card in the player's hand that matches the rank or suit of the top card or if the player has an eight, they can play it regardless of the rank or suit.
+{
+	for (Card c : this->hand) {
+		if (c.getRank() == top.getRank() || c.getSuit() == top.getSuit() || c.getRank() == 8) {
+			return true;
+		}
+	}
+	return false;
+}
+
+void Player::drawCard(Card new_card) // Draws a new card from the draw deck and adds it to the player's hand.
+{
+	this->hand.push_back(new_card);
+}

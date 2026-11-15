@@ -98,6 +98,25 @@ public:
 	void outputHand();
 
 	/**
+	 * Made By : Joshua Sullivan
+	 * Prints the player's hand in a more user-friendly format.
+	 */
+	void printHand();
+	/**
+	 * Made By : Joshua Sullivan
+	 * Checks if the player has any valid moves available based on the top card of the discard pile.
+	 * \param top The top card of the discard pile.
+	 * \return True if the player has a valid move, false otherwise.
+	 */
+	bool hasValidMove(Card top);
+	/**
+	 * Made By : Joshua Sullivan
+	 * Draws a new card from the draw deck and adds it to the player's hand.
+	 * \param new_card The new card to be drawn.
+	 */
+	void drawCard(Card new_card);
+
+	/**
 	 * Alter the player's score by given integer.
 	 * \param toAdd Score to add to player's score. Score will be reduced if toAdd is negative.
 	 */
