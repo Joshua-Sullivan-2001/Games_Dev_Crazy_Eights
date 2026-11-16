@@ -98,7 +98,8 @@ int Player::getScore()
 void Player::printHand() // Prints the player's hand in a more user-friendly format with each card on a new line and numbered for easy selection
 {
 	for (int i = 0; i < this->hand.size(); i++) { // Loop through each card in the player's hand
-		cout << i + 1 << "." << this->hand[i].toString() << endl; // Print the card's toString representation with a number for easy selection
+		cout << endl; // Print a blank line for spacing
+		cout << this->hand[i].toString() << endl; // Print the card's toString representation with a number for easy selection
 	} 
 }
 

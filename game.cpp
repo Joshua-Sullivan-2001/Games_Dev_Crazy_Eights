@@ -243,12 +243,14 @@ static void checkHand(int currentPlayer, int numPlayers){ // A function that che
     clearScreen(); // Clear the console screen
 
     cout << "The top card of the discard pile is: " << discardPile.peekTopCard().toString() << endl; // Print the top card of the discard pile
+    cout << "The current suit is: " << currentSuit << endl; // Print the current suit of the game
     cout << endl; // Print a blank line
 
     cout << "-----------" << "Current Hand" << "-----------" << endl; // Print check hand header
     cout << endl; // Print a blank line
 
     cout << "Player " << players[currentPlayer].getName() << "'s hand: "; // Print the current player's hand
+    cout << endl; // Print a blank line for spacing
     players[currentPlayer].printHand(); // Print the current player's hand
     cout << endl; // Print a blank line
     cout << "Press Enter to continue..."; // Prompt the user to press Enter to continue
