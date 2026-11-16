@@ -97,22 +97,22 @@ int Player::getScore()
 
 void Player::printHand() // Prints the player's hand in a more user-friendly format with each card on a new line and numbered for easy selection
 {
-	for (int i = 0; i < this->hand.size(); i++) {
-		cout << i + 1 << "." << this->hand[i].toString() << endl;
-	}
+	for (int i = 0; i < this->hand.size(); i++) { // Loop through each card in the player's hand
+		cout << i + 1 << "." << this->hand[i].toString() << endl; // Print the card's toString representation with a number for easy selection
+	} 
 }
 
 bool Player::hasValidMove(Card top, string currentSuit) // Checks if the player has any valid moves available based on the top card of the discard pile. A valid move is defined as having a card in the player's hand that matches the rank or suit of the top card or if the player has an eight, they can play it regardless of the rank or suit.
 {
-	for (Card c : this->hand) {
-		if (c.getRank() == top.getRank() || c.getSuit() == currentSuit || c.getRank() == 8) {
-			return true;
-		}
-	}
-	return false;
+	for (Card c : this->hand) { // Iterate through each card in the player's hand
+		if (c.getRank() == top.getRank() || c.getSuit() == currentSuit || c.getRank() == 8) { // Check if the card matches the rank or suit of the top card or if it is an eight
+			return true; // Return true if a valid move is found
+		} // End of if statement
+	} // End of for loop
+	return false; // Return false if no valid moves are found
 }
 
 void Player::drawCard(Card new_card) // Draws a new card from the draw deck and adds it to the player's hand.
 {
-	this->hand.push_back(new_card);
+	this->hand.push_back(new_card); // Add the new card to the player's hand
 }

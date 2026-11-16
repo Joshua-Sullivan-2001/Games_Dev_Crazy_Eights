@@ -42,6 +42,7 @@ static string callANewSuit(); // A function to allow the player to call a new su
 static void drawNewCard(int player); // A function to allow the player to draw a new card from the draw deck
 static void shuffleDiscardKeepTopCard(); // A function to shuffle the discard pile and keep the top card in place
 static int cardPoints(Card card); // A function to calculate the points of a card based on the game rules
+static void checkScoring(int winner, int numPlayers); // A function to check the scoring of the players at the end of a round and update their scores
 
 
 
@@ -207,7 +208,6 @@ static void playerNames(int numPlayers){ // A function that prompts the user to 
     for(int i = 0; i < numPlayers; i++){ // Loop through the number of players to get their names
         string name; // Declare a variable to hold the player's name
         cout << "Enter name for Player " << i + 1 << ": "; // Prompt the user to enter the name for the current player
-        cin.ignore(); // Ignore any leftover input in the input buffer to ensure the getline function works correctly
         getline(cin, name); // Get the player's name from input
 
         if (name.empty()) { // Check if the name is empty
@@ -279,6 +279,10 @@ static void startGame(){ // A function that starts the game and handles the main
 
         vector<int> scores; // Create a vector to hold the scores of the players
         for (int i = 0; i < numPlayers; i++) { // Loop through the number of players to get their scores
+            cout << "Player " << players[i].getName() << "'s score: " << players[i].getScore() << endl; // Print each player's score
+            cout << endl; // Print a blank line
+            cout << "Press Enter to continue..."; // Prompt the user to press Enter to continue
+            cin.get(); // Wait for the user to press Enter
             scores.push_back(players[i].getScore()); // Add each player's score to the playerScores vector
         } // End of for loop
 
@@ -487,9 +491,6 @@ static int playRound(int startPlayer, int numPlayers){ // A function to play a r
         } // End of if statement
     
         if (drawDeck.isEmpty()) { // Check again if the draw deck is empty after shuffling the discard pile
-
-            cout << "The draw deck is empty. There are no more cards to draw." << endl; // Print message indicating the draw deck is empty
-            cout << "Press Enter to continue..."; // Prompt the user to press Enter to continue
             return; // Return from the function
         }
     
@@ -497,7 +498,7 @@ static int playRound(int startPlayer, int numPlayers){ // A function to play a r
         cout << "Player " << players[player].getName() << " drew " << card.toString() << "." << endl; // Print message indicating the player drew a card
         
         if (isPlayable(card, discardPile.peekTopCard())) { // Check if the drawn card is playable
-
+            discardPile.addCard(card); // Add the drawn card to the discard pile
             if (card.getRank() == 8) { // Check if the drawn card is an eight
                 currentSuit = callANewSuit(); // Call the choose suit function to get the new suit for the game
             } else { // If the drawn card is not an eight
@@ -552,7 +553,7 @@ static int playRound(int startPlayer, int numPlayers){ // A function to play a r
         cout << "Player " << players[winner].getName() << " won the round and earned " << roundPoints << " points!" << endl; // Print message indicating the winner of the round and the points earned
         cout << "Press Enter to continue..."; // Prompt the user to press Enter to continue
         cin.get(); // Read the user's input
-        
+
     }
 
 
