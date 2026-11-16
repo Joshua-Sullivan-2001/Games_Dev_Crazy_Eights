@@ -1,13 +1,6 @@
 // This .cpp file will hold the crazy eights full game code
 
 #include "game.h" // Include the header file for this .cpp file
-#include "template/Deck.h" // Include the header file for the Deck class
-#include "template/Player.h" // Include the header file for the Player class
-#include "template/Card.h" // Include the header file for the Card class
-#include <iostream> // Include the iostream library for input/output operations
-#include <cstdlib> // Include the cstdlib library for system commands
-#include <vector> // Include the vector library for the dynamically sized arrays
-using namespace std; // Use the standard namespace to avoid prefixing standard library names with "std::"
 
 // Declare global variables for the draw deck, discard pile, players and current player index
 
@@ -43,7 +36,6 @@ static void drawNewCard(int player); // A function to allow the player to draw a
 static void shuffleDiscardKeepTopCard(); // A function to shuffle the discard pile and keep the top card in place
 static int cardPoints(Card card); // A function to calculate the points of a card based on the game rules
 static void checkScoring(int winner, int numPlayers); // A function to check the scoring of the players at the end of a round and update their scores
-
 
 
 static int readNumber(){ // A function that reads a number from the user and validates the input
@@ -491,6 +483,7 @@ static int playRound(int startPlayer, int numPlayers){ // A function to play a r
         } // End of if statement
     
         if (drawDeck.isEmpty()) { // Check again if the draw deck is empty after shuffling the discard pile
+            cout << "The draw deck is empty and there are no cards left to draw." << endl; // Print message indicating the draw deck is empty
             return; // Return from the function
         }
     
@@ -555,7 +548,6 @@ static int playRound(int startPlayer, int numPlayers){ // A function to play a r
         cin.get(); // Read the user's input
 
     }
-
 
 int main(){ // The main function that serves as the entry point of the program
 
