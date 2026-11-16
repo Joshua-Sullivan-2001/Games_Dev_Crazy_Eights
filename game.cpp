@@ -39,6 +39,9 @@ static int playRound(int startPlayer, int numPlayers); // A function to play a r
 static bool isPlayable(Card card, Card top); // A function to check if a card is playable based on the game rules
 static int chooseCard(int player); // A function to allow the player to choose a card to play
 static string callANewSuit(); // A function to allow the player to call a new suit when playing an eight
+static void drawNewCard(int player); // A function to allow the player to draw a new card from the draw deck
+static void shuffleDiscardKeepTopCard(); // A function to shuffle the discard pile and keep the top card in place
+static int cardPoints(Card card); // A function to calculate the points of a card based on the game rules
 
 
 
@@ -274,13 +277,13 @@ static void startGame(){ // A function that starts the game and handles the main
 
         checkScoring(winner, numPlayers); // Call the check scoring function to update the scores of the players and display the winner of the round
 
-        vector<int> playerScores; // Create a vector to hold the scores of the players
+        vector<int> scores; // Create a vector to hold the scores of the players
         for (int i = 0; i < numPlayers; i++) { // Loop through the number of players to get their scores
             scores.push_back(players[i].getScore()); // Add each player's score to the playerScores vector
         } // End of for loop
 
-        countScore(winner, playerScores); // Call the count score function to display the scores and the winner of the round
-        playerScores(playerScores); // Call the player scores function to display the scores of the players
+        countScore(winner, scores); // Call the count score function to display the scores and the winner of the round
+        playerScores(scores); // Call the player scores function to display the scores of the players
 
         if (players[winner].getScore() >= targetScore) { // Check if the winning player's score is greater than or equal to the target score
             cout << "Player " << players[winner].getName() << " has reached the target score of " << targetScore << " and wins the game!" << endl; // Print the winning player's name and score
@@ -424,7 +427,7 @@ static int playRound(int startPlayer, int numPlayers){ // A function to play a r
 
             if (card.getRank() == 8) { // Check if the chosen card is an eight
                 cout << "Player " << players[player].getName() << " played an eight and gets to choose a new suit." << endl; // Print message indicating the player played an eight
-                currentSuit = callANewSuit(player); // Call the choose suit function to get the new suit for the game
+                currentSuit = callANewSuit(); // Call the choose suit function to get the new suit for the game
             } else { // If the chosen card is not an eight
                 currentSuit = card.getSuit(); // Set the current suit to the suit of the chosen card
             } // End of if statement
@@ -477,19 +480,89 @@ static int playRound(int startPlayer, int numPlayers){ // A function to play a r
         } // End of while loop
     }
 
+    static void drawNewCard(int player) { // A function to draw a new card for the player
+    
+        if (drawDeck.isEmpty()) { // Check if the draw deck is empty
+            shuffleDiscardKeepTopCard(); // Call the shuffle discard function to shuffle the discard pile and keep the top card
+        } // End of if statement
+    
+        if (drawDeck.isEmpty()) { // Check again if the draw deck is empty after shuffling the discard pile
 
-int main(){
+            cout << "The draw deck is empty. There are no more cards to draw." << endl; // Print message indicating the draw deck is empty
+            cout << "Press Enter to continue..."; // Prompt the user to press Enter to continue
+            return; // Return from the function
+        }
+    
+        Card card = drawDeck.getTopCard(); // Get the top card from the draw deck
+        cout << "Player " << players[player].getName() << " drew " << card.toString() << "." << endl; // Print message indicating the player drew a card
+        
+        if (isPlayable(card, discardPile.peekTopCard())) { // Check if the drawn card is playable
+
+            if (card.getRank() == 8) { // Check if the drawn card is an eight
+                currentSuit = callANewSuit(); // Call the choose suit function to get the new suit for the game
+            } else { // If the drawn card is not an eight
+                currentSuit = card.getSuit(); // Set the current suit to the suit of the drawn card
+            } // End of if statement
+        } // End of if statement
+        else { // If the drawn card is not playable
+            players[player].addCard(card); // Add the drawn card to the player's hand
+            cout << "Player " << players[player].getName() << " cannot play the drawn card and must keep it." << endl; // Print message indicating the player cannot play the drawn card
+        } // End of else statement
+    }
+
+    static void shuffleDiscardKeepTopCard() { // A function to shuffle the discard pile and keep the top card
+
+        Card top = discardPile.getTopCard(); // Get the top card of the discard pile
+
+        while (!discardPile.isEmpty()) { // While the discard pile is not empty
+            drawDeck.addCard(discardPile.getTopCard()); // Move cards from the discard pile to the draw deck
+        } // End of while loop
+        
+        drawDeck.shuffle(); // Shuffle the draw deck to randomize the order of the cards
+        discardPile.addCard(top); // Add the top card back to the discard pile
+    }
+
+    static int cardPoints(Card card) {
+
+        if (card.getRank() == 8) { // Check if the card is an eight
+            return 50; // Return 50 points for an eight
+        } else if (card.getRank() >= 10) { // Check if the card is a ten, jack, queen, or king
+            return 10; // Return 10 points for a ten, jack, queen, or king
+        } else if (card.getRank() == 1) { // Check if the card is an ace
+            return 1; // Return 1 point for an ace
+        } else { // For all other cards
+            return card.getRank(); // Return the rank of the card as points
+        } // End of if statement
+    }
+
+    static void checkScoring(int winner, int numPlayers){
+
+        int roundPoints = 0; // Initialize a variable to hold the total points for the round
+    
+        for (int i = 0; i < numPlayers; i++) { // Loop through the number of players to calculate the total points for the round
+            if (i != winner) { // Check if the current player is not the winner
+                for (int j = 0; j < players[i].getHandSize(); j++) { // Loop through the current player's hand to calculate the points
+                    roundPoints = roundPoints + cardPoints(players[i].peekCard(j)); // Add the points of each card in the current player's hand to the total round points
+                } // End of for loop
+            } // End of if statement
+        } // End of for loop
+
+        players[winner].changeScoreBy(roundPoints); // Add the total round points to the winner's score
+        
+        cout << "Player " << players[winner].getName() << " won the round and earned " << roundPoints << " points!" << endl; // Print message indicating the winner of the round and the points earned
+        cout << "Press Enter to continue..."; // Prompt the user to press Enter to continue
+        cin.get(); // Read the user's input
+        
+    }
+
+
+int main(){ // The main function that serves as the entry point of the program
 
     clearScreen(); // Clear the console screen
     
     while (true) { // Start an infinite loop to keep the game running until the user chooses to exit
         mainMenu(); // Call the main menu function to display the main menu and handle user input
     }
-
-
-
-
-
 
     return 0;
 }
