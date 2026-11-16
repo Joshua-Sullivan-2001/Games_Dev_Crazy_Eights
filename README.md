@@ -15,10 +15,6 @@ You are also encouraged to extend your implementation of Crazy Eights building o
 
 This repository currently contains the project scaffold. The C++ file is empty so the game is not yet runnable. This README describes the target behavior and planned structure. I need to update the run instructions as the implementation is completed.
 
-## Design
-
-To Be Done
-
 ## Project Layout
 
 Everything will be in game .cpp file
@@ -34,7 +30,3 @@ entire thing as a zip
 interactive app
 supporting documentation
 reflective 500 word essay
-
-## Todo
-
-Fix README.md
