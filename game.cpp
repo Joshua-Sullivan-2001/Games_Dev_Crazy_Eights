@@ -1,5 +1,10 @@
 // This .cpp file will hold the crazy eights full game code
-
+#include "template/Deck.h" // Include the header file for the Deck class
+#include "template/Player.h" // Include the header file for the Player class
+#include "template/Card.h" // Include the header file for the Card class
+#include <iostream> // Include the iostream library for input/output operations
+#include <cstdlib> // Include the cstdlib library for system commands
+#include <vector> // Include the vector library for the dynamically sized arrays
 #include "game.h" // Include the header file for this .cpp file
 
 // Declare global variables for the draw deck, discard pile, players and current player index
