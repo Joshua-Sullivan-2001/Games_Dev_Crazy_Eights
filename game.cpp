@@ -47,6 +47,9 @@ static int readNumber(){ // A function that reads a number from the user and val
 
     int number; // Declare a variable to hold the number input by the user
     if (!(cin >> number)){ // Check if the input is not a number
+        if (cin.eof()) { // Check if the input stream is closed (end-of-file)
+            cout << "Input closed. Exiting." << endl; exit(0); // If the input stream is closed print a message and exit the program
+        } // End of if statement
         cin.clear(); // Clear the error flag on cin
         number = 0; // Set the number to 0 if the input is not a number
     }
@@ -294,9 +297,10 @@ static void startGame(){ // A function that starts the game and handles the main
             cin.get(); // Wait for the user to press Enter
             return; // Return from the function to end the game
         } // End of if statement
-
-        nextRound(round); // Call the next round function to start the next round
+        
         round++; // Increment the round counter
+        nextRound(round); // Call the next round function to start the next round
+        
 
         startPlayer = (winner + 1) % numPlayers; // Set the starting player for the next round to the player after the winner
     }
@@ -335,7 +339,7 @@ static void playerScores(vector<int> playerScores){ // A function that displays 
     cout << endl; // Print a blank line
 
     for(int i = 0; i < playerScores.size(); i++){ // Loop through the playerScores vector to display each player's score
-        cout << "Player " << i + 1 << "'s score: " << playerScores[i] << endl; // Print the score of each player
+        cout << "Player " << players[i].getName() << "'s score: " << playerScores[i] << endl; // Print the score of each player
     } // End of for loop
 
     cout << endl; // Print a blank line
@@ -354,12 +358,12 @@ static void countScore(int winner, vector<int> playerScores){ // A function that
     cout << "-------------------------------------------" << endl; // Print a separator line
     
     cout << endl; // Print a blank line
-    cout << "Player " << winner + 1 << " wins this round!" << endl; // Print the winner of the round
+    cout << "Player " << players[winner].getName() << " wins this round!" << endl; // Print the winner of the round
     cout << endl; // Print a blank line
 
     for(int i = 0; i < playerScores.size(); i++){ // Loop through the playerScores vector to display each player's score
         if(i != winner){ // Check if the current player is not the winner
-            cout << "Player " << i + 1 << "'s score: " << playerScores[i] << endl; // Print the score of each player
+            cout << "Player " << players[i].getName() << "'s score: " << playerScores[i] << endl; // Print the score of each player
         } // End of if statement
     } // End of for loop
 
@@ -450,7 +454,7 @@ static int playRound(int startPlayer, int numPlayers){ // A function to play a r
     static int chooseCard(int player) { // Allow the player to choose a card to play
 
         while (true){ // Start an infinite loop to keep prompting the player until they choose a valid card
-            cout << "Player " << players[player].getName() << " Which card would you like to play (1-" << players[player].getHandSize() << ")? "; // Prompt the player to choose a card to play
+            cout << "Player " << players[player].getName() << " Which card would you like to play: " << players[player].getHandSize(); // Prompt the player to choose a card to play
             int choice = readNumber(); // Read the player's choice using the readNumber function
             if (choice < 1 || choice > players[player].getHandSize()) { // Check if the choice is valid
                 cout << "That card is not in your hand." << endl; // Print message indicating the choice is invalid
@@ -496,19 +500,33 @@ static int playRound(int startPlayer, int numPlayers){ // A function to play a r
     
         Card card = drawDeck.getTopCard(); // Get the top card from the draw deck
         cout << "Player " << players[player].getName() << " drew " << card.toString() << "." << endl; // Print message indicating the player drew a card
-        
+        char choice; // Declare a variable to store the player's choice
         if (isPlayable(card, discardPile.peekTopCard())) { // Check if the drawn card is playable
-            discardPile.addCard(card); // Add the drawn card to the discard pile
-            if (card.getRank() == 8) { // Check if the drawn card is an eight
-                currentSuit = callANewSuit(); // Call the choose suit function to get the new suit for the game
-            } else { // If the drawn card is not an eight
-                currentSuit = card.getSuit(); // Set the current suit to the suit of the drawn card
+            cout << "Do you want to play this card? (y/n): "; // Ask the player if they want to play the drawn card
+            cin >> choice; // Read the player's choice
+            if (choice == 'y' || choice == 'Y') { // Checks if player whishes to play the drawn card
+                discardPile.addCard(card); // Add the drawn card to the discard pile
+                cout << "Player " << players[player].getName() << " played the drawn card." << endl; // Print message indicating the player played the drawn card
+                if (card.getRank() == 8) { // Check if the drawn card is an eight
+                                currentSuit = callANewSuit(); // Call the choose suit function to get the new suit for the game
+                            } else { // If the drawn card is not an eight
+                                currentSuit = card.getSuit(); // Set the current suit to the suit of the drawn card
+                            } // End of if statement
+                        } // End of if statement
+                        else { // If the drawn card is not playable
+                            players[player].addCard(card); // Add the drawn card to the player's hand
+                            cout << "Player " << players[player].getName() << " cannot play the drawn card and must keep it." << endl; // Print message indicating the player cannot play the drawn card
+                        } // End of else statement
+
             } // End of if statement
-        } // End of if statement
-        else { // If the drawn card is not playable
-            players[player].addCard(card); // Add the drawn card to the player's hand
-            cout << "Player " << players[player].getName() << " cannot play the drawn card and must keep it." << endl; // Print message indicating the player cannot play the drawn card
-        } // End of else statement
+            else if (choice == 'n' || choice == 'N') { // If the player does not wish to play the drawn card
+                cin >> choice; // Read the player's choice
+                cout << "Player " << players[player].getName() << " has chosen to keep the card." << endl; // Print message indicating the player chose to keep the card
+                players[player].addCard(card); // Add the drawn card to the player's hand
+                cout << "Player " << players[player].getName() << " has kept the card." << endl; // Print message indicating the player chose to keep the card
+            } // End of else statement
+            
+            
     }
 
     static void shuffleDiscardKeepTopCard() { // A function to shuffle the discard pile and keep the top card
