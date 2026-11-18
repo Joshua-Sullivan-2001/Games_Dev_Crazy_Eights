@@ -504,6 +504,12 @@ static int playRound(int startPlayer, int numPlayers){ // A function to play a r
         if (isPlayable(card, discardPile.peekTopCard())) { // Check if the drawn card is playable
             cout << "Do you want to play this card? (y/n): "; // Ask the player if they want to play the drawn card
             cin >> choice; // Read the player's choice
+            cin.ignore(10000, '\n'); // Ignore the rest of the input line to prevent any leftover characters from affecting future input
+            while (choice != 'y' && choice != 'Y' && choice != 'n' && choice != 'N') { // Check if the choice is valid
+                cout << "Invalid choice. Please enter 'y' or 'n': "; // Print message indicating the choice is invalid
+                cin >> choice; // Read the player's choice again
+                cin.ignore(10000, '\n'); // Ignore the rest of the input line to prevent any leftover characters from affecting future input
+            } // End of while loop
             if (choice == 'y' || choice == 'Y') { // Checks if player whishes to play the drawn card
                 discardPile.addCard(card); // Add the drawn card to the discard pile
                 cout << "Player " << players[player].getName() << " played the drawn card." << endl; // Print message indicating the player played the drawn card
@@ -513,17 +519,15 @@ static int playRound(int startPlayer, int numPlayers){ // A function to play a r
                                 currentSuit = card.getSuit(); // Set the current suit to the suit of the drawn card
                             } // End of if statement
                         } // End of if statement
-                        else { // If the drawn card is not playable
+                        else { // If the player does not wish to play the drawn card
                             players[player].addCard(card); // Add the drawn card to the player's hand
-                            cout << "Player " << players[player].getName() << " cannot play the drawn card and must keep it." << endl; // Print message indicating the player cannot play the drawn card
+                            cout << "Player " << players[player].getName() << " has kept the card." << endl; // Print message indicating the player kept the drawn card
                         } // End of else statement
 
             } // End of if statement
-            else if (choice == 'n' || choice == 'N') { // If the player does not wish to play the drawn card
-                cin >> choice; // Read the player's choice
-                cout << "Player " << players[player].getName() << " has chosen to keep the card." << endl; // Print message indicating the player chose to keep the card
+            else { // If the player does not wish to play the drawn card
                 players[player].addCard(card); // Add the drawn card to the player's hand
-                cout << "Player " << players[player].getName() << " has kept the card." << endl; // Print message indicating the player chose to keep the card
+                cout << "Player " << players[player].getName() << " cannot play the drawn card and must keep it." << endl; // Print message indicating the player cannot play the drawn card and must keep it
             } // End of else statement
             
             
