@@ -1,3 +1,4 @@
+/// \file game.cpp
 /// \section info Information
 /// \brief This section contains information about the Crazy Eights game implementation.
 /// \details This section contains information about the Crazy Eights game implementation, including the author, date, brief description, detailed description, citation, copyright and attention notice. It also includes a TODO section for future improvements and a list of included header files.
@@ -6,7 +7,7 @@
 /// \date 2024-06-01
 /// \brief This file contains the implementation of the Crazy Eights game.
 /// \details This file contains the implementation of the Crazy Eights game, including the main function, game rules and game logic. It uses the Player, Deck and Card classes to manage the game state and player interactions. It also includes functions to handle user input and output as well as functions to manage the game flow and scoring. The game is played in a console window and uses standard input and output for user interaction. May contain some bugs (but tested and not found any) but should be fully functional. The game is designed to be played by 2-5 players and can be played in multiple rounds until a player reaches a predetermined score to win the game. The game rules are based on the traditional Crazy Eights card game.
-/// \cite https://en.wikipedia.org/wiki/Crazy_Eights
+/// \see https://en.wikipedia.org/wiki/Crazy_Eights
 /// \copyright 2024 Joshua Sullivan. All rights reserved.
 /// \copyright This project is open source and free to use modify and distribute.
 /// \attention This project is open source and free to use, modify and distribute. However, please give credit to the original author (Joshua Sullivan) and include this notice in any copies or substantial portions of the software. Additionally please note that this project is provided "as is" without any warranty of any kind, either express or implied including but not limited to the warranties of merchantability fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability whether in an action of contract tort or otherwise arising from out of or in connection with the software or the use or other dealings in the software.
@@ -21,7 +22,6 @@
 /// \brief This section contains a list of included header files for the Crazy Eights game implementation.
 /// \details This section contains a list of included header files for the Crazy Eights game implementation. It includes the Player, Deck and Card classes as well as standard libraries for input/output and system commands. It also includes the game.h header file which contains the function prototypes for the game logic and user interaction.
 
-/// \category includes
 /// \brief This section includes the necessary header files for the Crazy Eights game implementation.
 /// \details This section includes the necessary header files for the Crazy Eights game implementation. It includes the Player, Deck and Card classes as well as standard libraries for input/output and system commands. It also includes the game.h header file which contains the function prototypes for the game logic and user interaction.
 
@@ -37,7 +37,6 @@
 /// \brief This section declares the global variables for the Crazy Eights game.
 /// \details This section declares the global variables for the Crazy Eights game. It includes the draw deck, discard pile, players and current player index. The draw deck is a Deck object that contains the cards to be drawn by the players during the game. The discard pile is a Deck object that contains the cards that have been played by the players during the game. The players is a vector of Player objects that contains the players in the game. The current suit is a string that contains the current suit of the game. It is used to determine if a player can play a card based on the suit of the top card of the discard pile.
 
-/// \category global variables
 /// \brief This section declares the global variables for the Crazy Eights game.
 /// \details This section declares the global variables for the Crazy Eights game. It includes the draw deck, discard pile, players and current player index.
 /// \param drawDeck The draw deck is a Deck object that contains the cards to be drawn by the players during the game.
@@ -55,8 +54,6 @@ string currentSuit; // Declare a global variable for the current suit of the gam
 /// \brief This section declares the function prototypes for the Crazy Eights game.
 /// \details This section declares the function prototypes for the Crazy Eights game. It includes functions for displaying the game rules, starting a new game, clearing the console screen, exiting the game, displaying the main menu, getting the number of players, getting the names of the players, handling a player's turn, checking a player's hand, starting the game loop, transitioning to the next round, validating the game rules during gameplay, displaying player scores, counting player scores and determining the winner of a round. It also includes functions for reading user input and validating it as a number.
 
-
-/// \category function prototypes
 /// \brief This section declares the function prototypes for the Crazy Eights game.
 /// \details This section declares the function prototypes for the Crazy Eights game. It includes functions for displaying the game rules, starting a new game, clearing the console screen, exiting the game, displaying the main menu, getting the number of players, getting the names of the players, handling a player's turn, checking a player's hand, starting the game loop, transitioning to the next round, validating the game rules during gameplay, displaying player scores, counting player scores and determining the winner of a round. It also includes functions for reading user input and validating it as a number.
 /// \param gameRules Displays the rules of the game to the user.
@@ -114,10 +111,9 @@ static void checkScoring(int winner, int numPlayers); // A function to check the
 
 /// \section main Main Function
 
-/// \category main function
 /// \brief This section contains the main function that serves as the entry point of the program.
 /// \details This section contains the main function that serves as the entry point of the program. It clears the console screen and starts an infinite loop to keep the game running until the user chooses to exit. It calls the main menu function to display the main menu and handle user input.
-/// \related This function calls the clearScreen function to clear the console screen and the mainMenu function to display the main menu and handle user input.
+/// \see This function calls the clearScreen function to clear the console screen and the mainMenu function to display the main menu and handle user input.
 /// \note This function uses the clearScreen function to clear the console screen before starting the game loop. It also uses the mainMenu function to display the main menu and handle user input. The function does not return any value as it is designed to manage the game flow and user interactions.
 void main(){ // The main function that serves as the entry point of the program
 
@@ -132,10 +128,9 @@ void main(){ // The main function that serves as the entry point of the program
 /// \brief This section contains utility functions that are used throughout the program.
 /// \details This section contains utility functions that are used throughout the program. It includes functions for reading user input and validating it as a number, displaying the game rules, starting a new game, clearing the console screen, exiting the game, displaying the main menu, getting the number of players, getting the names of the players, handling a player's turn, checking a player's hand, starting the game loop, transitioning to the next round, validating the game rules during gameplay, displaying player scores, counting player scores and determining the winner of a round.
 
-/// \category utility functions
 /// \brief The function "readNumber" reads a number from the user and validates the input.
 /// \details The function "readNumber" reads a number from the user and validates the input. It checks if the input is a valid integer and handles any errors that may occur during input. If the input is not a valid integer, it clears the input stream and prompts the user to enter a valid number. It also handles end-of-file (EOF) conditions and exits the program if the input stream is closed.
-/// \related No other functions are directly called.
+/// \see No other functions are directly called.
 /// \param number The number input by the user is stored in this variable and returned by the function.
 /// \return The function returns the number input by the user as an integer.
 static int readNumber(){ // A function that reads a number from the user and validates the input
@@ -155,7 +150,7 @@ static int readNumber(){ // A function that reads a number from the user and val
 
 /// \brief The function "gameRules" displays the rules of the game to the user.
 /// \details The function "gameRules" displays the rules of the game to the user. It clears the console screen and prints the rules of the game in a formatted manner. It also prompts the user to press Enter to continue after reading the rules.
-/// \related This function calls the clearScreen function to clear the console screen before displaying the rules.
+/// \see This function calls the clearScreen function to clear the console screen before displaying the rules.
 static void gameRules(){ // A function that displays the rules of the game to the user
 
     clearScreen(); // Clear the console screen
@@ -197,7 +192,7 @@ static void gameRules(){ // A function that displays the rules of the game to th
 
 /// \brief The function "gameStart" starts a new game of Crazy Eights.
 /// \details The function "gameStart" starts a new game of Crazy Eights. It clears the console screen and prints a message indicating that a new game is starting. It then prompts the user to press Enter to continue and calls the startGame function to begin the game.
-/// \related The function "clearScreen" is called to clear the console screen and the function "startGame" is called to begin the game.
+/// \see The function "clearScreen" is called to clear the console screen and the function "startGame" is called to begin the game.
 static void gameStart(){ // A function that starts a new game of Crazy Eights
 
     clearScreen(); // Clear the console screen
@@ -213,7 +208,7 @@ static void gameStart(){ // A function that starts a new game of Crazy Eights
 
 /// \brief The function "clearScreen" clears the console screen.
 /// \details The function "clearScreen" clears the console screen using the system command "cls".   
-/// \related This function calls inbuilt system command to clear the console screen.
+/// \see This function calls inbuilt system command to clear the console screen.
 /// \note This function is platform-dependent and may not work on all operating systems. It is designed to work on Windows systems. For cross-platform compatibility, consider using a library like ncurses or a different method to clear the console screen.
 static void clearScreen(){ // A function that clears the console screen
 
@@ -224,7 +219,7 @@ static void clearScreen(){ // A function that clears the console screen
 
 /// \brief The function "mainMenuExit" exits the game and terminates the program.
 /// \details The function "mainMenuExit" exits the game and terminates the program. It clears the console screen, prints a message indicating that the game is exiting, prompts the user to press Enter to continue, and then calls the exit function to terminate the program with a status code of 0 (indicating successful exit).
-/// \related The function "clearScreen" is called to clear the console screen and the function "exit" is called to terminate the program.
+/// \see The function "clearScreen" is called to clear the console screen and the function "exit" is called to terminate the program.
 static void mainMenuExit(){ // A function that exits the game and terminates the program
 
     clearScreen(); // Clear the console screen
@@ -239,7 +234,7 @@ static void mainMenuExit(){ // A function that exits the game and terminates the
 
 /// \brief The function "mainMenu" displays the main menu and handles user input.
 /// \details The function "mainMenu" displays the main menu and handles user input. It clears the console screen, prints the main menu options, prompts the user to enter their choice, and uses a switch statement to handle the user's choice. Depending on the user's choice, it calls the appropriate function to start a new game, view the game rules or exit the game. If the user enters an invalid choice, it prints an error message and prompts the user to try again.
-/// \related The function "clearScreen" is called to clear the console screen, the function "readNumber" is called to read and validate the user's input as a number and the functions "gameStart", "gameRules" and "mainMenuExit" are called based on the user's choice in the switch statement.
+/// \see The function "clearScreen" is called to clear the console screen, the function "readNumber" is called to read and validate the user's input as a number and the functions "gameStart", "gameRules" and "mainMenuExit" are called based on the user's choice in the switch statement.
 /// \param choice The user's choice is stored in this variable and used in the switch statement to determine which action to take.
 static void mainMenu(){ // A function that displays the main menu
 
@@ -283,7 +278,7 @@ static void mainMenu(){ // A function that displays the main menu
 
 /// \brief The function "playerAmount" prompts the user to enter the number of players in the game.
 /// \details The function "playerAmount" prompts the user to enter the number of players in the game. It clears the console screen, prints a header for player amount, prompts the user to enter a number between 2 and 5 and reads the input using the readNumber function. If the input is invalid (less than 2 or greater than 5), it prints an error message and prompts the user to try again by calling itself recursively. If the input is valid, it returns the number of players.
-/// \related The function "clearScreen" is called to clear the console screen and the function "readNumber" is called to read and validate the user's input as a number. The function also uses recursion to prompt the user again if the input is invalid.
+/// \see The function "clearScreen" is called to clear the console screen and the function "readNumber" is called to read and validate the user's input as a number. The function also uses recursion to prompt the user again if the input is invalid.
 /// \param numPlayers The number of players input by the user is stored in this variable and returned by the function.
 /// \return The function returns the number of players input by the user as an integer.
 static int playerAmount(){ // A function that prompts the user to enter the number of players in the game
@@ -312,7 +307,7 @@ static int playerAmount(){ // A function that prompts the user to enter the numb
 
 /// \brief The function "playerNames" prompts the user to enter the names of the players in the game.
 /// \details The function "playerNames" prompts the user to enter the names of the players in the game. It clears the console screen, prints a header for player names, and loops through the number of players to prompt the user to enter each player's name. If the user enters an empty name, it assigns a default name (e.g., "Player 1", "Player 2", etc.). It creates a new Player object for each player, sets their name and adds them to the players vector. The function ensures that the players vector starts empty by clearing it before adding new players.
-/// \related The function "clearScreen" is called to clear the console screen and the inbuilt function "getline" is called to read the player's name from input. The function uses a loop to prompt for each player's name and creates Player objects accordingly.
+/// \see The function "clearScreen" is called to clear the console screen and the inbuilt function "getline" is called to read the player's name from input. The function uses a loop to prompt for each player's name and creates Player objects accordingly.
 /// \param numPlayers The number of players in the game.
 /// \param name The player's name input by the user is stored in this variable and used to set the name of the Player object.
 /// \param newPlayer A new Player object is created for each player and their name is set using the setName method. The Player object is then added to the players vector.
@@ -346,7 +341,7 @@ static void playerNames(int numPlayers){ // A function that prompts the user to 
 
 /// \brief The function "playerTurn" handles a player's turn in the game.
 /// \details The function "playerTurn" handles a player's turn in the game. It clears the console screen, prints a header indicating the player's turn, displays the current player's name and prompts the user to press Enter to continue. It then calls the checkHand function to display the current player's hand and allow them to make a move. The function ensures that the game flow continues smoothly by managing the player's turn and interactions with the game state.
-/// \related The function "clearScreen" is called to clear the console screen and the function "checkHand" is called to display the current player's hand and allow them to make a move.
+/// \see The function "clearScreen" is called to clear the console screen and the function "checkHand" is called to display the current player's hand and allow them to make a move.
 /// \param currentPlayer The index of the current player in the players vector.
 /// \param numPlayers The total number of players in the game.
 static void playerTurn(int currentPlayer, int numPlayers){ // A function that handles a player's turn in the game
@@ -371,7 +366,7 @@ static void playerTurn(int currentPlayer, int numPlayers){ // A function that ha
 
 /// \brief The function "checkHand" checks the current player's hand and displays it to the user.
 /// \details The function "checkHand" checks the current player's hand and displays it to the user. It clears the console screen, prints the top card of the discard pile and the current suit. It then displays the current player's hand and prompts the user to press Enter to continue. The function calls the "playerMove" function to handle the current player's move.
-/// \related The function "clearScreen" is called to clear the console screen and the function "playerMove" is called to handle the current player's move. The function also uses the "peekTopCard" method of the discard pile to display the top card and the "printHand" method of the Player class to display the current player's hand.
+/// \see The function "clearScreen" is called to clear the console screen and the function "playerMove" is called to handle the current player's move. The function also uses the "peekTopCard" method of the discard pile to display the top card and the "printHand" method of the Player class to display the current player's hand.
 /// \param currentPlayer The index of the current player in the players vector.
 /// \param numPlayers The total number of players in the game.
 /// \param discardPile The discard pile is a Deck object that contains the cards that have been played by the players during the game. The top card of the discard pile is displayed to the user.
@@ -402,7 +397,7 @@ static void checkHand(int currentPlayer, int numPlayers){ // A function that che
 
 /// \brief The function "startGame" starts the game and handles the main game loop.
 /// \details The function "startGame" starts the game and handles the main game loop. It gets the number of players and their names, sets the target score and initializes the starting player and round counter. It enters an infinite loop to play rounds of the game until a player reaches the target score. After each round it checks the scoring displays the scores of the players and determines if a player has won. If a player reaches the target score it announces the winner and ends the game. The function also manages the transition to the next round and updates the starting player for each round.
-/// \related The function "playerAmount" is called to get the number of players, the function "playerNames" is called to get the names of the players, the function "playRound" is called to play a round of the game, the function "checkScoring" is called to update the scores of the players, the function "countScore" is called to display the scores and determine the winner of a round and the function "nextRound" is called to handle the transition to the next round. The function also uses a vector to hold the scores of the players and manages user input for continuing between rounds.
+/// \see The function "playerAmount" is called to get the number of players, the function "playerNames" is called to get the names of the players, the function "playRound" is called to play a round of the game, the function "checkScoring" is called to update the scores of the players, the function "countScore" is called to display the scores and determine the winner of a round and the function "nextRound" is called to handle the transition to the next round. The function also uses a vector to hold the scores of the players and manages user input for continuing between rounds.
 /// \param numPlayers The number of players in the game is stored in this variable and used to manage the game flow and scoring.
 /// \param targetScore The target score is calculated based on the number of players and is used to determine when a player has won the game.
 /// \param startPlayer The starting player index is initialized to 0 and is updated after each round to determine which player goes first in the next round.
@@ -452,7 +447,7 @@ static void startGame(){ // A function that starts the game and handles the main
 
 /// \brief The function "nextRound" handles the transition to the next round of the game.
 /// \details The function "nextRound" handles the transition to the next round of the game. It clears the console screen, prints a header indicating the next round, displays the current round number and prompts the user to press Enter to continue. The function ensures that the game flow continues smoothly by managing the transition between rounds and allowing the user to prepare for the next round. 
-/// \related The function "clearScreen" is called to clear the console screen before displaying the next round information.
+/// \see The function "clearScreen" is called to clear the console screen before displaying the next round information.
 /// \param currentRound The current round number is passed as a parameter to the function and is used to display the next round number to the user.
 static void nextRound(int currentRound){ // A function that handles the transition to the next round of the game
 
@@ -474,7 +469,7 @@ static void nextRound(int currentRound){ // A function that handles the transiti
 
 /// \brief The function "activeValidatorForRulesDuringGamePlay" that validates the game rules during gameplay.
 /// \details The function "activeValidatorForRulesDuringGamePlay" checks if the current player has a valid move based on the top card of the discard pile and the current suit. It calls the hasValidMove function of the Player class to determine if the player can make a valid move according to the game rules. The function returns true if the player has a valid move and false otherwise.
-/// \related This function calls the hasValidMove function of the Player class to check if the player has a valid move based on the top card of the discard pile and the current suit.
+/// \see This function calls the hasValidMove function of the Player class to check if the player has a valid move based on the top card of the discard pile and the current suit.
 /// \param player The index of the player whose move is being validated.
 /// \return true if the player has a valid move, false otherwise.
 static bool activeValidatorForRulesDuringGamePlay(int player){ // A function that validates the game rules during gameplay
@@ -484,7 +479,7 @@ static bool activeValidatorForRulesDuringGamePlay(int player){ // A function tha
 
 /// \brief The function "playerScores" that displays the scores of the players at the end of a round.
 /// \details The function "playerScores" takes a vector of player scores as input and displays the scores of each player at the end of a round. It clears the console screen, prints a header for player scores and loops through the playerScores vector to display each player's score. The function prompts the user to press Enter to continue after displaying the scores.
-/// \related This function calls the clearScreen function to clear the console screen before displaying the scores. It also uses a loop to iterate through the playerScores vector and display each player's score.
+/// \see This function calls the clearScreen function to clear the console screen before displaying the scores. It also uses a loop to iterate through the playerScores vector and display each player's score.
 /// \param playerScores A vector containing the scores of each player.
 static void playerScores(vector<int> playerScores){ // A function that displays the scores of the players at the end of a round
 
@@ -508,7 +503,7 @@ static void playerScores(vector<int> playerScores){ // A function that displays 
 
 /// \brief The function "countScore" that counts the scores of the players and displays the winner.
 /// \details The function "countScore" takes the index of the winning player and a vector of player scores as input. It clears the console screen, prints a header for score count, displays the winner of the round and loops through the playerScores vector to display each player's score. The function prompts the user to press Enter to continue after displaying the scores and winner.
-/// \related This function calls the clearScreen function to clear the console screen before displaying the scores and winner. It also uses a loop to iterate through the playerScores vector and display each player's score excluding the winner as the winner's score is displayed before loop.
+/// \see This function calls the clearScreen function to clear the console screen before displaying the scores and winner. It also uses a loop to iterate through the playerScores vector and display each player's score excluding the winner as the winner's score is displayed before loop.
 /// \param winner The index of the winning player.
 /// \param playerScores A vector containing the scores of each player.
 static void countScore(int winner, vector<int> playerScores){ // A function that counts the scores of the players and displays the winner
@@ -538,7 +533,7 @@ static void countScore(int winner, vector<int> playerScores){ // A function that
 
 /// \brief The function "dealCards" that deals cards to the players at the start of a round.
 /// \details The function "dealCards" takes the number of players as input and deals cards to each player at the start of a round. It clears the draw deck and discard pile, fills and shuffles the draw deck and clears each player's hand. It then deals a specified number of cards to each player based on the number of players (7 cards for 2 players, 5 cards for 3-5 players). Finally it adds the top card from the draw deck to the discard pile and sets the current suit based on that card.
-/// \related This function calls the clear, fillDeck, shuffle, clearHand, addCard and peekTopCard methods of the Deck and Player classes to manage the dealing of cards and game state. It also uses a loop to iterate through the number of players and deal cards accordingly.
+/// \see This function calls the clear, fillDeck, shuffle, clearHand, addCard and peekTopCard methods of the Deck and Player classes to manage the dealing of cards and game state. It also uses a loop to iterate through the number of players and deal cards accordingly.
 /// \param numPlayers The number of players in the game is passed as a parameter to the function and is used to determine how many cards to deal to each player and manage the game state.
 /// \param handSize A variable that holds the number of cards to deal to each player based on the number of players in the game. It is set to 7 for 2 players and 5 for 3-5 players.
 /// \note The function ensures that the draw deck and discard pile are cleared before dealing cards to avoid any leftover cards from previous rounds affecting the current round.
@@ -574,7 +569,7 @@ static void dealCards(int numPlayers){ // A function to deal cards to the player
 
 /// \brief The function "playRound" that plays a round of the game and returns the index of the winning player.
 /// \details The function "playRound" takes the starting player index and the number of players as input. It deals cards to the players, sets the current player to the starting player and enters an infinite loop to handle each player's turn. It calls the playerTurn function to manage the current player's turn and checks if the current player has won by checking if their hand is empty. If a player wins it returns the index of the winning player. The function also manages the transition to the next player by incrementing the current player index and wrapping around using modulo arithmetic.
-/// \related This function calls the dealCards and playerTurn functions to manage the game state and player interactions. It also uses the isEmpty method of the Player class to check if a player has won by having an empty hand.
+/// \see This function calls the dealCards and playerTurn functions to manage the game state and player interactions. It also uses the isEmpty method of the Player class to check if a player has won by having an empty hand.
 /// \param startPlayer The index of the starting player for the round is passed as a parameter to the function and is used to determine which player goes first in the round.
 /// \param numPlayers The number of players in the game is passed as a parameter to the function and is used to manage the game flow and determine when to wrap around to the first player.
 /// \param current The index of the current player is initialized to the starting player and is updated after each turn to manage the game flow and determine which player's turn it is.
@@ -597,7 +592,7 @@ static int playRound(int startPlayer, int numPlayers){ // A function to play a r
 
 /// \brief The function "playerMove" that handles a player's move during their turn.
 /// \details The function "playerMove" checks if the current player has any valid moves available. If not it prompts the player to draw a card. If the player has valid moves it allows them to choose a card to play. If the chosen card is an eight it prompts the player to choose a new suit. The function updates the current suit based on the chosen card and displays the current suit to match. It also prompts the user to press Enter to continue after handling the player's move.
-/// \related This function calls the activeValidatorForRulesDuringGamePlay, drawNewCard, chooseCard, callANewSuit and isPlayable functions to manage the player's move and game state. It also uses the addCard method of the discard pile to add the chosen card to the discard pile and the getRank and getSuit methods of the Card class to determine the rank and suit of the chosen card.
+/// \see This function calls the activeValidatorForRulesDuringGamePlay, drawNewCard, chooseCard, callANewSuit and isPlayable functions to manage the player's move and game state. It also uses the addCard method of the discard pile to add the chosen card to the discard pile and the getRank and getSuit methods of the Card class to determine the rank and suit of the chosen card.
 /// \param player The index of the current player is passed as a parameter to the function and is used to manage the player's move and interactions with the game state.
 /// \param card The chosen card is a Card object that is used to determine the rank and suit of the card played by the player and to update the current suit of the game.
 /// \param currentSuit The current suit is a string that contains the current suit of the game. It is updated based on the chosen card and used to determine if a player can play a card based on the suit of the top card of the discard pile.
@@ -629,7 +624,7 @@ static void playerMove(int player) { // Handle a player's move during their turn
 
 /// \brief The function "isPlayable" that checks if a card is playable based on the game rules.
 /// \details The function "isPlayable" takes a card and the top card of the discard pile as input. It checks if the card is playable based on the game rules which allow a card to be played if it matches the rank or suit of the top card of the discard pile or if it is an eight. The function returns true if the card is playable and false otherwise.
-/// \related This function uses the getRank and getSuit methods of the Card class to determine the rank and suit of the card and the top card of the discard pile. It also uses the currentSuit variable to check if the card matches the current suit of the game.
+/// \see This function uses the getRank and getSuit methods of the Card class to determine the rank and suit of the card and the top card of the discard pile. It also uses the currentSuit variable to check if the card matches the current suit of the game.
 /// \param card The card to be checked for playability is passed as a parameter to the function and is used to determine if it can be played based on the game rules.
 /// \param top The top card of the discard pile is passed as a parameter to the function and is used to determine if the card can be played based on its rank or suit.
 /// \param currentSuit The current suit is a string that contains the current suit of the game. It is used to determine if a card can be played based on the suit of the top card of the discard pile.
@@ -641,7 +636,7 @@ static bool isPlayable(Card card, Card top){ // A function to check if a card is
 
 /// \brief The function "chooseCard" that allows the player to choose a card to play during their turn.
 /// \details The function "chooseCard" prompts the player to choose a card to play from their hand. It checks if the chosen card is valid and playable based on the game rules. If the chosen card is not valid or playable it prompts the player to choose again. The function returns the index of the chosen card in the player's hand.
-/// \related This function uses the readNumber function to read the player's input and the isPlayable function to check if the chosen card is playable based on the game rules. It also uses the getHandSize and peekCard methods of the Player class to display the player's hand and check if the chosen card is valid.
+/// \see This function uses the readNumber function to read the player's input and the isPlayable function to check if the chosen card is playable based on the game rules. It also uses the getHandSize and peekCard methods of the Player class to display the player's hand and check if the chosen card is valid.
 /// \param player The index of the current player is passed as a parameter to the function and is used to manage the player's move and interactions with the game state.
 /// \param choice The player's choice of card is read from input and stored in this variable. It is used to determine which card the player wants to play and to check if the choice is valid and playable.
 /// \return The index of the chosen card in the player's hand.
@@ -649,7 +644,7 @@ static bool isPlayable(Card card, Card top){ // A function to check if a card is
 static int chooseCard(int player) { // Allow the player to choose a card to play
 
     while (true){ // Start an infinite loop to keep prompting the player until they choose a valid card
-        cout << "Player " << players[player].getName() << " Which card would you like to play: " << players[player].getHandSize(); // Prompt the player to choose a card to play
+        cout << "Player " << players[player].getName() << " Which card would you like to play: "; // Prompt the player to choose a card to play
         int choice = readNumber(); // Read the player's choice using the readNumber function
         if (choice < 1 || choice > players[player].getHandSize()) { // Check if the choice is valid
             cout << "That card is not in your hand." << endl; // Print message indicating the choice is invalid
@@ -667,7 +662,7 @@ static int chooseCard(int player) { // Allow the player to choose a card to play
 
 /// \brief The function "callANewSuit" that allows the player to call a new suit when playing an eight.
 /// \details The function "callANewSuit" prompts the player to choose a new suit when they play an eight. It displays the options for the four suits and reads the player's choice. If the choice is valid it returns the chosen suit as a string. If the choice is invalid it prompts the player to choose again until a valid choice is made.
-/// \related This function calls the readNumber function to read the player's input and an array of strings to hold the four suits. It also provides feedback to the player if their choice is invalid and prompts them to choose again.
+/// \see This function calls the readNumber function to read the player's input and an array of strings to hold the four suits. It also provides feedback to the player if their choice is invalid and prompts them to choose again.
 /// \param choice The player's choice of suit is read from input and stored in this variable. It is used to determine which suit the player wants to call and to check if the choice is valid.
 /// \param suits An array of strings is used to hold the four suits (Hearts, Diamonds, Clubs, Spades) and is used to display the options to the player and return the chosen suit.
 /// \return The chosen suit as a string.
@@ -690,7 +685,7 @@ static string callANewSuit(){ // Allow the player to call a new suit when playin
 
 /// \brief The function "drawNewCard" that allows the player to draw a new card from the draw deck.
 /// \details The function "drawNewCard" checks if the draw deck is empty and shuffles the discard pile if necessary. It then draws a new card for the player and checks if it is playable. If the card is playable, it prompts the player to choose whether to play it or keep it. If the card is not playable, it automatically adds it to the player's hand. The function also handles the case where the draw deck is empty and there are no cards left to draw.
-/// \related This function calls the shuffleDiscardKeepTopCard function to shuffle the discard pile and keep the top card if the draw deck is empty. It also uses the isPlayable function to check if the drawn card is playable and the addCard method of the Player class to add the card to the player's hand. The function provides feedback to the player about their options and handles user input for their choice.
+/// \see This function calls the shuffleDiscardKeepTopCard function to shuffle the discard pile and keep the top card if the draw deck is empty. It also uses the isPlayable function to check if the drawn card is playable and the addCard method of the Player class to add the card to the player's hand. The function provides feedback to the player about their options and handles user input for their choice.
 /// \param player The index of the current player is passed as a parameter to the function and is used to manage the player's move and interactions with the game state.
 /// \param card The drawn card is a Card object that is used to determine if it is playable and to update the player's hand or the discard pile based on the player's choice.
 /// \param choice The player's choice of whether to play the drawn card or keep it is read from input and stored in this variable. It is used to determine how to handle the drawn card based on the player's decision.
@@ -741,7 +736,7 @@ static void drawNewCard(int player) { // A function to draw a new card for the p
 
 /// \brief The function "shuffleDiscardKeepTopCard" that shuffles the discard pile and keeps the top card.
 /// \details The function "shuffleDiscardKeepTopCard" is called when the draw deck is empty and there are no cards left to draw. It shuffles the discard pile and keeps the top card of the discard pile. The function moves all cards from the discard pile to the draw deck, shuffles the draw deck and then adds the top card back to the discard pile. This ensures that the game can continue even when the draw deck is empty.
-/// \related This function uses the getTopCard, isEmpty, addCard, and shuffle methods of the Deck class to manage the discard pile and draw deck. It also provides feedback to the player about the shuffling process and ensures that the top card of the discard pile is preserved.
+/// \see This function uses the getTopCard, isEmpty, addCard, and shuffle methods of the Deck class to manage the discard pile and draw deck. It also provides feedback to the player about the shuffling process and ensures that the top card of the discard pile is preserved.
 /// \param top The top card of the discard pile is stored in this variable and is used to keep the top card of the discard pile after shuffling the rest of the cards into the draw deck.
 /// \note The function ensures that the top card of the discard pile is preserved after shuffling the rest of the cards into the draw deck. It also handles the case where the discard pile is empty and there are no cards left to shuffle.
 static void shuffleDiscardKeepTopCard() { // A function to shuffle the discard pile and keep the top card
@@ -758,7 +753,7 @@ static void shuffleDiscardKeepTopCard() { // A function to shuffle the discard p
 
 /// \brief The function "cardPoints" that calculates the points for a given card based on its rank.
 /// \details The function "cardPoints" takes a Card object as input and calculates the points for the card based on its rank. It returns 50 points for an eight, 10 points for a ten, jack, queen, or king, 1 point for an ace and the rank of the card as points for all other cards. The function is used to calculate the total points for a round based on the cards in the players hands.
-/// \related This function uses the getRank method of the Card class to determine the rank of the card and calculate the points accordingly. It provides feedback to the player about the points earned for each card based on its rank.
+/// \see This function uses the getRank method of the Card class to determine the rank of the card and calculate the points accordingly. It provides feedback to the player about the points earned for each card based on its rank.
 /// \param card The Card object is passed as a parameter to the function and is used to determine the rank of the card and calculate the points accordingly.
 /// \return The points for the given card based on its rank.
 static int cardPoints(Card card) {
@@ -776,7 +771,7 @@ static int cardPoints(Card card) {
 
 /// \brief The function "checkScoring" that calculates the total points for a round and updates the winner's score.
 /// \details The function "checkScoring" takes the index of the winning player and the number of players as input. It calculates the total points for the round by summing the points of all cards in the hands of the losing players. It then updates the winner's score with the total points earned and displays a message indicating the winner and the points earned. The function prompts the user to press Enter to continue after displaying the scoring information.
-/// \related This function uses the cardPoints function to calculate the points for each card in the losing players' hands. It also uses the getHandSize and peekCard methods of the Player class to access the cards in the players' hands and the changeScoreBy method to update the winner's score. The function provides feedback to the player about the scoring process and ensures that the game flow continues smoothly by managing the scoring and allowing the user to prepare for the next round.
+/// \see This function uses the cardPoints function to calculate the points for each card in the losing players' hands. It also uses the getHandSize and peekCard methods of the Player class to access the cards in the players' hands and the changeScoreBy method to update the winner's score. The function provides feedback to the player about the scoring process and ensures that the game flow continues smoothly by managing the scoring and allowing the user to prepare for the next round.
 /// \param winner The index of the winning player is passed as a parameter to the function and is used to update the winner's score and display the scoring information.
 /// \param numPlayers The number of players in the game is passed as a parameter to the function and is used to loop through the players and calculate the total points for the round based on the cards in the losing players' hands.
 /// \param roundPoints A variable that holds the total points for the round is initialized to zero and is used to accumulate the points from the losing players' hands. It is updated as the function loops through the players and their hands to calculate the total points earned by the winner.
