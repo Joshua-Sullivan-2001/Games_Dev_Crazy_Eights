@@ -115,7 +115,7 @@ static void checkScoring(int winner, int numPlayers); // A function to check the
 /// \details This section contains the main function that serves as the entry point of the program. It clears the console screen and starts an infinite loop to keep the game running until the user chooses to exit. It calls the main menu function to display the main menu and handle user input.
 /// \see This function calls the clearScreen function to clear the console screen and the mainMenu function to display the main menu and handle user input.
 /// \note This function uses the clearScreen function to clear the console screen before starting the game loop. It also uses the mainMenu function to display the main menu and handle user input. The function does not return any value as it is designed to manage the game flow and user interactions.
-void main(){ // The main function that serves as the entry point of the program
+int main(){ // The main function that serves as the entry point of the program
 
     clearScreen(); // Clear the console screen
     
