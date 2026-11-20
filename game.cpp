@@ -1,6 +1,6 @@
 /// \file game.cpp
 /// \author Joshua Sullivan
-/// \date 2024-06-01
+/// \date 2026-11-20
 /// \brief This file contains the implementation of the Crazy Eights game.
 /// \details This file contains the implementation of the Crazy Eights game, including the main function, game rules and game logic. It uses the Player, Deck and Card classes to manage the game state and player interactions. It also includes functions to handle user input and output as well as functions to manage the game flow and scoring. The game is played in a console window and uses standard input and output for user interaction. May contain some bugs (but tested and not found any) but should be fully functional. The game is designed to be played by 2-5 players and can be played in multiple rounds until a player reaches a predetermined score to win the game. The game rules are based on the traditional Crazy Eights card game.
 /// \see https://en.wikipedia.org/wiki/Crazy_Eights
@@ -37,6 +37,8 @@ vector<Player> players; // Declare a global variable for the vector list of play
 /// \brief The current suit is a string that contains the current suit of the game.
 /// \details It is used to determine if a player can play a card based on the suit of the top card of the discard pile.
 string currentSuit; // Declare a global variable for the current suit of the game
+/// \brief The consecutive passes is an integer that counts the number of consecutive passes made by players during the game
+int consecutivePasses = 0; // Declare a global variable for the number of consecutive passes
 
 // ---------------------------------------------------------------------------
 // Function Prototypes
@@ -138,16 +140,16 @@ static void gameRules(){ // A function that displays the rules of the game to th
     cout << "3. if playing with 2 players each player is dealt 7 cards." << endl; // Print rule 3
     cout << "4. The remaining cards are placed face down to form a draw pile." << endl; // Print rule 4
     cout << "5. The top card of the draw pile is turned face up to start the discard pile." << endl; // Print rule 5
-    cout << "6. The player to the left of the dealer goes first." << endl; // Print rule 6
+    cout << "6. In the first round the first player entered goes first. In later rounds the player after the previous round's winner goes first." << endl; // Print rule 6
     cout << "7. On a player's turn they must play a card from their hand that matches the rank or suit of the top card of the discard pile or if they have an eight, they can play it regardless of the rank or suit." << endl; // Print rule 7
     cout << "8. If a player plays an eight, they must declare the suit that the next player must play." << endl; // Print rule 8
-    cout << "9. If a player cannot play a card, they must draw a card from the draw pile." << endl; // Print rule 9
-    cout << "10. If the drawn card can be played the player may play it immediately. Otherwise the turn passes to the next player." << endl; // Print rule 10
+    cout << "9. If a player cannot play a card they must keep drawing cards from the draw pile until they draw a card that can be played." << endl; // Print rule 9
+    cout << "10. When a playable card is drawn the player may play it immediately or keep it in their hand to be played later." << endl; // Print rule 10
     cout << "11. If the draw pile is empty and a player cannot play a card, they must pass their turn." << endl; // Print rule 11
     cout << "12. The first player to get rid of all their cards wins the round." << endl; // Print rule 12
     cout << "13. The winner of the round scores points based on the cards remaining in the other players hands. The game continues until a player reaches a predetermined score (e.g., 100 points for 2 players, 150-250 points for 3-5 players) to win the game." << endl; // Print rule 13
     cout << "14. Each eight left in a hand is worth 50 points. Each king, queen, jack or ten is worth 10 points, each ace is worth 1 point and all other number cards are worth their face value." << endl; // Print rule 14
-    cout << "15. Play multiple rounds rotating the dealer to the left each time. The first player to reach 100 points (for 2 players) or 150 to 250 points (for 3 to 5 players) wins the game." << endl; // Print rule 15
+    cout << "15. Play multiple rounds. The first player to reach 100 points (for 2 players) or 150 to 250 points (for 3 to 5 players) wins the game." << endl; // Print rule 15
     
     cout << endl; // Print a blank line
     cout << "Press Enter to continue..." << endl; // Prompt the user to press Enter to continue
@@ -547,10 +549,11 @@ static void dealCards(int numPlayers){ // A function to deal cards to the player
 /// \par Local variables
 /// - \c current The index of the current player is initialized to the starting player and is updated after each turn to manage the game flow and determine which player's turn it is.
 /// \return The index of the winning player (the first player to empty their hand).
-/// \note The function uses an infinite loop to keep the round running until a player wins and it returns the index of the winning player when a player has an empty hand.
+/// \note The function uses an infinite loop to keep the round running until a player wins. It also manages the consecutive passes counter to handle the case where all players pass in a row and the draw deck is empty determining the winner based on who has the fewest cards.
 static int playRound(int startPlayer, int numPlayers){ // A function to play a round of the game
 
     dealCards(numPlayers); // Deal cards to players and set up the discard pile
+    consecutivePasses = 0; // Reset the consecutive passes counter to 0 at the start of the round
     int current = startPlayer; // Set the current player to the starting player
 
     while (true) { // Start an infinite loop to keep the round running until a player wins
@@ -559,6 +562,22 @@ static int playRound(int startPlayer, int numPlayers){ // A function to play a r
         if (players[current].isEmpty()) { // Check if the current player has won the round
             return current; // Return the index of the winning player
         } // End of if statement
+
+        if (consecutivePasses >= numPlayers) { // Check if every player has passed in a row
+    int lowest = 0; // Assume the first player has the fewest cards
+    for (int i = 1; i < numPlayers; i++) { // Loop through the other players
+        if (players[i].getHandSize() < players[lowest].getHandSize()) { // Check if this player has fewer cards
+            lowest = i; // Remember this player
+        } // End of if statement
+    } // End of for loop
+
+    cout << "Nobody can play and the draw deck is empty." << endl; // Print message explaining the situation
+    cout << players[lowest].getName() << " has the fewest cards and wins the round." << endl; // Print the round winner
+    cout << "Press Enter to continue..."; // Prompt the user to press Enter to continue
+    cin.get(); // Wait for the user to press Enter
+
+    return lowest; // Return the index of the winning player
+} // End of if statement
 
         current = (current + 1) % numPlayers; // Move to the next player
     } // End of while loop
@@ -583,6 +602,7 @@ static void playerMove(int player) { // Handle a player's move during their turn
         int index = chooseCard(player); // Call the choose card function to get the index of the card the player wants to play
         Card card = players[player].getCard(index); // Get the card object at the chosen index
         discardPile.addCard(card); // Add the chosen card to the discard pile
+        consecutivePasses = 0; // Reset the consecutive passes counter to 0 since a card was played
 
         if (card.getRank() == 8) { // Check if the chosen card is an eight
             cout << "Player " << players[player].getName() << " played an eight and gets to choose a new suit." << endl; // Print message indicating the player played an eight
@@ -663,63 +683,76 @@ static string callANewSuit(){ // Allow the player to call a new suit when playin
 }
 
 /// \brief The function "drawNewCard" that allows the player to draw a new card from the draw deck.
-/// \details The function "drawNewCard" checks if the draw deck is empty and shuffles the discard pile if necessary. It then draws a new card for the player and checks if it is playable. If the card is playable, it prompts the player to choose whether to play it or keep it. If the card is not playable, it automatically adds it to the player's hand. The function also handles the case where the draw deck is empty and there are no cards left to draw.
+/// \details The function "drawNewCard" checks if the draw deck is empty and shuffles the discard pile if necessary. It then draws a card for the player and checks if it is playable. If the card is playable the player is asked whether to play it or keep it and the function returns. If the card is not playable it is added to the player's hand and the function draws another card. This repeats until a playable card is drawn or there are no cards left to draw.
 /// \see This function calls the shuffleDiscardKeepTopCard function to shuffle the discard pile and keep the top card if the draw deck is empty. It also uses the isPlayable function to check if the drawn card is playable and the addCard method of the Player class to add the card to the player's hand. The function provides feedback to the player about their options and handles user input for their choice.
 /// \param player The index of the current player is passed as a parameter to the function and is used to manage the player's move and interactions with the game state.
 /// \par Local variables
 /// - \c card The drawn card is a Card object that is used to determine if it is playable and to update the player's hand or the discard pile based on the player's choice.
 /// - \c choice The player's choice of whether to play the drawn card or keep it is read from input and stored in this variable. It is used to determine how to handle the drawn card based on the player's decision.
-/// \note The function ensures that the draw deck is not empty before drawing a card and handles the case where the player has no valid moves and must draw a card. It also provides feedback to the player about their options and handles user input for their choice.
+/// \note The function keeps drawing until a playable card is drawn or the draw deck is empty after reshuffling the discard pile. A player who draws a playable card may choose to keep it instead of playing it.
 static void drawNewCard(int player) { // A function to draw a new card for the player
     
-    if (drawDeck.isEmpty()) { // Check if the draw deck is empty
-        shuffleDiscardKeepTopCard(); // Call the shuffle discard function to shuffle the discard pile and keep the top card
-    } // End of if statement
+    while (true) { // Keep drawing cards until the player draws a playable card or the draw deck runs out
 
-    if (drawDeck.isEmpty()) { // Check again if the draw deck is empty after shuffling the discard pile
-        cout << "The draw deck is empty and there are no cards left to draw." << endl; // Print message indicating the draw deck is empty
-        return; // Return from the function
-    }
-
-    Card card = drawDeck.getTopCard(); // Get the top card from the draw deck
-    cout << "Player " << players[player].getName() << " drew " << card.toString() << "." << endl; // Print message indicating the player drew a card
-    char choice; // Declare a variable to store the player's choice
-    if (isPlayable(card, discardPile.peekTopCard())) { // Check if the drawn card is playable
-        cout << "Do you want to play this card? (y/n): "; // Ask the player if they want to play the drawn card
-        cin >> choice; // Read the player's choice
-        cin.ignore(10000, '\n'); // Ignore the rest of the input line to prevent any leftover characters from affecting future input
-        while (choice != 'y' && choice != 'Y' && choice != 'n' && choice != 'N') { // Check if the choice is valid
-            cout << "Invalid choice. Please enter 'y' or 'n': "; // Print message indicating the choice is invalid
-            cin >> choice; // Read the player's choice again
-            cin.ignore(10000, '\n'); // Ignore the rest of the input line to prevent any leftover characters from affecting future input
-        } // End of while loop
-        if (choice == 'y' || choice == 'Y') { // Checks if player whishes to play the drawn card
-            discardPile.addCard(card); // Add the drawn card to the discard pile
-            cout << "Player " << players[player].getName() << " played the drawn card." << endl; // Print message indicating the player played the drawn card
-        if (card.getRank() == 8) { // Check if the drawn card is an eight
-            currentSuit = callANewSuit(); // Call the choose suit function to get the new suit for the game
-            } 
-        else { // If the drawn card is not an eight
-            currentSuit = card.getSuit(); // Set the current suit to the suit of the drawn card
-            } // End of if statement
-            } // End of if statement
-        else { // If the player does not wish to play the drawn card
-            players[player].addCard(card); // Add the drawn card to the player's hand
-            cout << "Player " << players[player].getName() << " has kept the card." << endl; // Print message indicating the player kept the drawn card
-            } // End of else statement
+        if (drawDeck.isEmpty()) { // Check if the draw deck is empty
+            shuffleDiscardKeepTopCard(); // Call the shuffle discard function to shuffle the discard pile and keep the top card
         } // End of if statement
-        else { // If the player does not wish to play the drawn card
+
+        if (drawDeck.isEmpty()) { // Check again if the draw deck is empty after shuffling the discard pile
+            cout << "The draw deck is empty and there are no cards left to draw." << endl; // Print message indicating the draw deck is empty
+            consecutivePasses++; // Increment the consecutive passes counter
+            return; // Return from the function
+        } // End of if statement
+
+        Card card = drawDeck.getTopCard(); // Get the top card from the draw deck
+        cout << "Player " << players[player].getName() << " drew " << card.toString() << "." << endl; // Print message indicating the player drew a card
+        char choice; // Declare a variable to store the player's choice
+
+        if (isPlayable(card, discardPile.peekTopCard())) { // Check if the drawn card is playable
+            cout << "Do you want to play this card? (y/n): "; // Ask the player if they want to play the drawn card
+            cin >> choice; // Read the player's choice
+            cin.ignore(10000, '\n'); // Ignore the rest of the input line to prevent any leftover characters from affecting future input
+
+            while (choice != 'y' && choice != 'Y' && choice != 'n' && choice != 'N') { // Check if the choice is valid
+                cout << "Invalid choice. Please enter 'y' or 'n': "; // Print message indicating the choice is invalid
+                cin >> choice; // Read the player's choice again
+                cin.ignore(10000, '\n'); // Ignore the rest of the input line to prevent any leftover characters from affecting future input
+            } // End of while loop
+
+            if (choice == 'y' || choice == 'Y') { // Checks if player wishes to play the drawn card
+                discardPile.addCard(card); // Add the drawn card to the discard pile
+                consecutivePasses = 0; // Reset the consecutive passes counter since a card was played
+                cout << "Player " << players[player].getName() << " played the drawn card." << endl; // Print message indicating the player played the drawn card
+
+                if (card.getRank() == 8) { // Check if the drawn card is an eight
+                    currentSuit = callANewSuit(); // Call the choose suit function to get the new suit for the game
+                } // End of if statement
+                else { // If the drawn card is not an eight
+                    currentSuit = card.getSuit(); // Set the current suit to the suit of the drawn card
+                } // End of else statement
+            } // End of if statement
+            else { // If the player does not wish to play the drawn card
                 players[player].addCard(card); // Add the drawn card to the player's hand
-                cout << "Player " << players[player].getName() << " cannot play the drawn card and must keep it." << endl; // Print message indicating the player cannot play the drawn card and must keep it
-        } // End of else statement            
+                cout << "Player " << players[player].getName() << " has kept the card." << endl; // Print message indicating the player kept the drawn card
+            } // End of else statement
+
+            return; // Return from the function after handling the drawn card
+        } // End of if statement
+        else { // If the drawn card is not playable
+            players[player].addCard(card); // Add the drawn card to the player's hand
+            cout << "Player " << players[player].getName() << " cannot play the drawn card and must keep it." << endl; // Print message indicating the player cannot play the drawn card and must keep it
+            // No return here so the loop goes round again and the player draws another card
+        } // End of else statement
+
+    } // End of while loop
 }
 
 /// \brief The function "shuffleDiscardKeepTopCard" that shuffles the discard pile and keeps the top card.
 /// \details The function "shuffleDiscardKeepTopCard" is called when the draw deck is empty and there are no cards left to draw. It shuffles the discard pile and keeps the top card of the discard pile. The function moves all cards from the discard pile to the draw deck, shuffles the draw deck and then adds the top card back to the discard pile. This ensures that the game can continue even when the draw deck is empty.
-/// \see This function uses the getTopCard, isEmpty, addCard, and shuffle methods of the Deck class to manage the discard pile and draw deck. It also provides feedback to the player about the shuffling process and ensures that the top card of the discard pile is preserved.
+/// \see This function uses the getTopCard, isEmpty, addCard and shuffle methods of the Deck class to manage the discard pile and draw deck.
 /// \par Local variables
 /// - \c top The top card of the discard pile is stored in this variable and is used to keep the top card of the discard pile after shuffling the rest of the cards into the draw deck.
-/// \note The function ensures that the top card of the discard pile is preserved after shuffling the rest of the cards into the draw deck. It also handles the case where the discard pile is empty and there are no cards left to shuffle.
+/// \note The function ensures that the top card of the discard pile is preserved after shuffling the rest of the cards into the draw deck. It assumes the discard pile is not empty because the game always keeps at least one card on it.
 static void shuffleDiscardKeepTopCard() { // A function to shuffle the discard pile and keep the top card
 
     Card top = discardPile.getTopCard(); // Get the top card of the discard pile
@@ -734,7 +767,7 @@ static void shuffleDiscardKeepTopCard() { // A function to shuffle the discard p
 
 /// \brief The function "cardPoints" that calculates the points for a given card based on its rank.
 /// \details The function "cardPoints" takes a Card object as input and calculates the points for the card based on its rank. It returns 50 points for an eight, 10 points for a ten, jack, queen, or king, 1 point for an ace and the rank of the card as points for all other cards. The function is used to calculate the total points for a round based on the cards in the players hands.
-/// \see This function uses the getRank method of the Card class to determine the rank of the card and calculate the points accordingly. It provides feedback to the player about the points earned for each card based on its rank.
+/// \see This function uses the getRank method of the Card class to determine the rank of the card and calculate the points accordingly.
 /// \param card The Card object is passed as a parameter to the function and is used to determine the rank of the card and calculate the points accordingly.
 /// \return The points for the given card based on its rank.
 static int cardPoints(Card card) {
