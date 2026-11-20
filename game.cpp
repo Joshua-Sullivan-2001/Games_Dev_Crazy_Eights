@@ -156,13 +156,13 @@ static void gameRules(){ // A function that displays the rules of the game to th
     clearScreen(); // Clear the console screen
     
     cout << "-------------------------------------------" << endl; // Print a separator line
-    cout <<"-----------" << "Crazy Eights" << "-----------" << endl; // Print welcome message
+    cout <<"---------------" << " Crazy Eights " << "--------------" << endl; // Print welcome message
     cout << "-------------------------------------------" << endl; // Print a separator line
 
     cout << endl; // Print a blank line
 
     cout << "-------------------------------------------" << endl; // Print a separator line
-    cout << "-----------" << "Game Rules" << "-----------" << endl; // Print game rules header
+    cout << "----------------" << " Game Rules " << "---------------" << endl; // Print game rules header
     cout << "-------------------------------------------" << endl; // Print a separator line
     
     cout << endl; // Print a blank line
@@ -241,7 +241,7 @@ static void mainMenu(){ // A function that displays the main menu
     clearScreen(); // Clear the console screen
 
     cout << "-------------------------------------------" << endl; // Print a separator line
-    cout << "-----------" << "Main Menu" << "-----------" << endl; // Print main menu header
+    cout << "----------------" << " Main Menu " << "----------------" << endl; // Print main menu header
     cout << "-------------------------------------------" << endl; // Print a separator line
     
     cout << endl; // Print a blank line
@@ -286,7 +286,7 @@ static int playerAmount(){ // A function that prompts the user to enter the numb
     clearScreen(); // Clear the console screen
 
     cout << "-------------------------------------------" << endl; // Print a separator line
-    cout << "-----------" << "Player Amount" << "-----------" << endl; // Print player amount header
+    cout << "-------------" << " Player Amount " << "--------------" << endl; // Print player amount header
     cout << "-------------------------------------------" << endl; // Print a separator line
     
     cout << endl; // Print a blank line
@@ -316,7 +316,7 @@ static void playerNames(int numPlayers){ // A function that prompts the user to 
     clearScreen(); // Clear the console screen
 
     cout << "-------------------------------------------" << endl; // Print a separator line
-    cout << "-----------" << "Player Names" << "-----------" << endl; // Print player names header
+    cout << "--------------" << " Player Names " << "---------------" << endl; // Print player names header
     cout << "-------------------------------------------" << endl; // Print a separator line
     
     cout << endl; // Print a blank line
@@ -349,7 +349,7 @@ static void playerTurn(int currentPlayer, int numPlayers){ // A function that ha
     clearScreen(); // Clear the console screen
 
     cout << "-------------------------------------------" << endl; // Print a separator line
-    cout << "-----------" << "Player Turn" << "-----------" << endl; // Print player turn header
+    cout << "---------------" << " Player Turn " << "---------------" << endl; // Print player turn header
     cout << "-------------------------------------------" << endl; // Print a separator line
     
     cout << endl; // Print a blank line
@@ -454,7 +454,7 @@ static void nextRound(int currentRound){ // A function that handles the transiti
     clearScreen(); // Clear the console screen
 
     cout << "-------------------------------------------" << endl; // Print a separator line
-    cout << "-----------" << "Next Round" << "-----------" << endl; // Print next round header
+    cout << "---------------" << " Next Round " << "---------------" << endl; // Print next round header
     cout << "-------------------------------------------" << endl; // Print a separator line
     
     cout << endl; // Print a blank line
@@ -486,7 +486,7 @@ static void playerScores(vector<int> playerScores){ // A function that displays 
     clearScreen(); // Clear the console screen
 
     cout << "-------------------------------------------" << endl; // Print a separator line
-    cout << "-----------" << "Player Scores" << "-----------" << endl; // Print player scores header
+    cout << "--------------" << " Player Scores " << "--------------" << endl; // Print player scores header
     cout << "-------------------------------------------" << endl; // Print a separator line
     cout << endl; // Print a blank line
 
@@ -511,7 +511,7 @@ static void countScore(int winner, vector<int> playerScores){ // A function that
     clearScreen(); // Clear the console screen
 
     cout << "-------------------------------------------" << endl; // Print a separator line
-    cout << "-----------" << "Score Count" << "-----------" << endl; // Print score count header
+    cout << "---------------" << " Score Count " << "---------------" << endl; // Print score count header
     cout << "-------------------------------------------" << endl; // Print a separator line
     
     cout << endl; // Print a blank line
